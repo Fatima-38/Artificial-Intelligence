@@ -1,25 +1,25 @@
 import sys
 
-class Node():
+class Node():                    #ye ek node class hai jo state, parent node aur action ko represent karta hai
     def __init__(self, state, parent, action):
         self.state = state
         self.parent = parent
         self.action = action
 
-class StackFrontier():
+class StackFrontier():      #ye ek stack frontier class hai jo depth-first search ke liye use hoti hai
     def __init__(self):
         self.frontier = []
 
-    def add(self, node):
+    def add(self, node):            #ye method ek node ko frontier mein add karta hai
         self.frontier.append(node)
 
-    def contains_state(self, state):
+    def contains_state(self, state):            #ye method check karta hai ki kya given state frontier mein hai
         return any(node.state == state for node in self.frontier)
 
-    def empty(self):
+    def empty(self):                #ye method check karta hai ki kya frontier empty hai
         return len(self.frontier) == 0
 
-    def remove(self):
+    def remove(self):           #ye method frontier se last node ko remove karta hai aur return karta hai
         if self.empty():
             raise Exception("empty frontier")
         else:
@@ -27,7 +27,7 @@ class StackFrontier():
             self.frontier = self.frontier[:-1]
             return node
 
-class QueueFrontier(StackFrontier):
+class QueueFrontier(StackFrontier):                 #ye ek queue frontier class hai jo breadth-first search ke liye use hoti hai
     def remove(self):
         if self.empty():
             raise Exception("empty frontier")
@@ -36,7 +36,7 @@ class QueueFrontier(StackFrontier):
             self.frontier = self.frontier[1:]
             return node
 
-class Maze():
+class Maze():           #ye ek maze class hai jo maze ko represent karti hai aur uske methods provide karti hai
     def __init__(self, filename):
         # Read file and set height and width of maze
         with open(filename) as f:
@@ -59,8 +59,8 @@ class Maze():
             row = []
             for j in range(self.width):
                 try:
-                    if contents[i][j] == "A":
-                        self.start = (i, j)
+                    if contents[i][j] == "A":           #ye start point ko set karta hai
+                        self.start = (i, j)             #ye goal point ko set karta hai
                         row.append(False)
                     elif contents[i][j] == "B":
                         self.goal = (i, j)
@@ -75,7 +75,7 @@ class Maze():
 
         self.solution = None
 
-    def print(self):
+    def print(self):        #ye method maze ko print karta hai
         solution = self.solution[1] if self.solution is not None else None
         print()
         for i, row in enumerate(self.walls):
@@ -93,7 +93,7 @@ class Maze():
             print()
         print()
 
-    def neighbors(self, state):
+    def neighbors(self, state):                 #ye method current state ke neighbors ko return karta hai
         row, col = state
         candidates = [
             ("up", (row - 1, col)),
@@ -180,7 +180,7 @@ class Maze():
                 )
         img.save(filename)
 
-if __name__ == "__main__":
+if __name__ == "__main__":        #ye main function hai jo maze ko load karta hai, solve karta hai aur output image generate karta hai
     if len(sys.argv) != 2:
         sys.exit("Usage: python maze.py maze.txt")
     m = Maze(sys.argv[1])
